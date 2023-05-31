@@ -70,3 +70,38 @@
   </div>
 </template>
   ```
+  
+  # 3
+    element-plus 配置 vite.config.js(参考官网) / styles/element/index.scss
+    ```vite.config.js
+    plugins: [
+      vue(),
+      //element-plus
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [
+          // 1. 配置elementPlus采用sass样式配色系统
+          ElementPlusResolver({ importStyle: "sass" }),
+        ],
+      }),
+    ],
+
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // 2. 自动导入定制化样式文件进行样式覆盖
+          additionalData: `
+            @use "@/styles/element/index.scss" as *;
+          `,
+        }
+      }
+    }
+    ```
+
+    sass下载
+    axios封装 utils/http.js
+    common.scss
+    error lens扩展程序安装
+    var.scss 配置
