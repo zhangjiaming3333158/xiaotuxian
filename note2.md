@@ -105,3 +105,7 @@
     common.scss
     error lens扩展程序安装
     var.scss 配置
+
+#6_1 p29
+    Layout首页
+    pinia管理导航数据

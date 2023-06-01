@@ -1,17 +1,25 @@
-<template>
-  <div class="wrapper">
-    <h1>Layout</h1>
-    <!-- 二级路由 -->
-    <router-view></router-view>
-  </div>
-</template>
+<script setup>
+import LayoutNav from '@/views/Layout/components/LayoutNav.vue'
+import LayoutFixed from '@/views/Layout/components/LayoutFixed.vue'
+import LayoutHeader from '@/views/Layout/components/LayoutHeader.vue'
+import LayoutFooter from '@/views/Layout/components/LayoutFooter.vue'
 
-<script>
-export default {
+import { useCategoryStore } from '@/stores/categoryStore'
+import { onMounted } from 'vue'
 
-}
+const categoryStore = useCategoryStore()
+onMounted(() => categoryStore.getCategory())
 </script>
 
-<style>
+<template>
+  <LayoutNav></LayoutNav>
+  <LayoutFixed></LayoutFixed>
+  <LayoutHeader></LayoutHeader>
+  <main>
+    <router-view></router-view>
+  </main>
+  <LayoutFooter></LayoutFooter>
+</template>
 
+<style>
 </style>
