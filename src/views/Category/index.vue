@@ -1,17 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { getCategoryAPI } from '@/apis/category.js'
-import { useRouter } from 'vue-router'
-const route = useRouter()
-const categoryData = ref({})
-const getCategory = async (id) => {
-  const res = await getCategoryAPI(id)
-  categoryData.value = res.result
-  console.log(categoryData)
-}
-onMounted(() => {
-  getCategory(route.currentRoute.value.params.id)
-})
+import { useBanner } from './composable/useBanner'
+import { useCategory } from './composable/useCategory'
+import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+const { bannerList } = useBanner()
+const { categoryData } = useCategory()
+
 </script>
 
 <template>
@@ -23,6 +16,35 @@ onMounted(() => {
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{ categoryData.name }}</el-breadcrumb-item>
         </el-breadcrumb>
+      </div>
+      <!-- 轮播图 -->
+      <div class="home-banner">
+        <el-carousel height="500px">
+          <el-carousel-item v-for="item in bannerList" :key="item.id">
+            <img src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/6d202d8e-bb47-4f92-9523-f32ab65754f4.jpg" alt="">
+            <!-- <img :src="item.imgUrl" alt=""> -->
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="sub-list">
+        <h3>全部分类</h3>
+        <ul>
+          <!-- SubCategory -->
+          <li v-for="i in categoryData.children" :key="i.id">
+            <RouterLink :to="`/category/sub/${i.id}`">
+              <img :src="i.picture" />
+              <p>{{ i.name }}</p>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+      <div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
+        <div class="head">
+          <h3>- {{ item.name }}-</h3>
+        </div>
+        <div class="body">
+          <GoodsItem v-for="good in item.goods" :goods="good" :key="good.id" />
+        </div>
       </div>
     </div>
   </div>
@@ -104,6 +126,18 @@ onMounted(() => {
 
   .bread-container {
     padding: 25px 0;
+  }
+  .home-banner {
+    width: 1240px;
+    height: 500px;
+    left: 0;
+    top: 0;
+    z-index: 98;
+
+    img {
+      width: 100%;
+      height: 500px;
+    }
   }
 }
 </style>
