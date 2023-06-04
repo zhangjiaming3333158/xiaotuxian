@@ -9,11 +9,11 @@ import router from './router'
 
 // 引入懒加载指令插件并且注册
 import { lazyPlugin } from '@/directives'
-
+import { componentPlugin } from '@/components/index.js'
 
 const app = createApp(App)
 app.use(lazyPlugin)
 app.use(createPinia())
 app.use(router)
-
+app.use(componentPlugin)
 app.mount('#app')
