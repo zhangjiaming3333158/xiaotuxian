@@ -3,14 +3,23 @@ import DetailHot from './components/DetailHot.vue';
 import { getDetail } from '@/apis/detail'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+
+// 使用 ref 创建响应式数据
 const goods = ref({})
+
+// 获取路由参数
 const route = useRoute()
+
+// 获取商品详情数据
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result
 }
+
+// 挂载时获取商品详情数据
 onMounted(() => getGoods())
 
+// sku 点击事件
 const skuChange = (sku) => {
   // console.log(sku)
 }
@@ -33,7 +42,7 @@ const skuChange = (sku) => {
             goods.categories[0].name
           }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ goods.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 商品信息 -->
