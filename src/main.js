@@ -11,9 +11,15 @@ import router from './router'
 import { lazyPlugin } from '@/directives'
 import { componentPlugin } from '@/components/index.js'
 
+//pinia持久化插件
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
+const pinia = createPinia()
 const app = createApp(App)
+
+pinia.use(piniaPluginPersistedstate)
 app.use(lazyPlugin)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(componentPlugin)
 app.mount('#app')

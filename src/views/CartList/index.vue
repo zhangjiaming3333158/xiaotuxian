@@ -1,5 +1,20 @@
 <script setup>
-const cartList = []
+import { useCartStore } from '@/stores/cartStore.js'
+const cartStore = useCartStore()
+const cartList = cartStore.cartList
+
+// 单选回调
+const singleCheck = (i, selected) => {
+  console.log(selected)
+  // console.log(i, selected)
+  // store cartList 数组 无法知道要修改谁的选中状态？
+  // 除了selected补充一个用来筛选的参数 - skuId
+  cartStore.singleCheck(i.skuId, selected)
+}
+
+const allCheck = (selected) => {
+  cartStore.allCheck(selected)
+}
 </script>
 
 <template>
@@ -10,7 +25,7 @@ const cartList = []
           <thead>
             <tr>
               <th width="120">
-                <el-checkbox/>
+                <el-checkbox :model-value="cartStore.isAll" @change="allCheck" />
               </th>
               <th width="400">商品信息</th>
               <th width="220">单价</th>
@@ -23,7 +38,7 @@ const cartList = []
           <tbody>
             <tr v-for="i in cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <el-checkbox :model-value="i.selected" @change="(selected) => singleCheck(i, selected)" />
               </td>
               <td>
                 <div class="goods">
@@ -70,11 +85,11 @@ const cartList = []
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 10 件商品，已选择 2 件，商品合计：
-          <span class="red">¥ 200.00 </span>
+          共 {{ cartStore.allCount }}件商品，已选择 {{ cartStore.selectedCount }} 件，商品合计：
+          <span class="red">¥ {{ cartStore.selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
-          <el-button size="large" type="primary" >下单结算</el-button>
+          <el-button size="large" type="primary">下单结算</el-button>
         </div>
       </div>
     </div>
@@ -159,7 +174,7 @@ const cartList = []
       height: 100px;
     }
 
-    >div {
+    > div {
       width: 280px;
       font-size: 16px;
       padding-left: 10px;
@@ -204,6 +219,5 @@ const cartList = []
     font-weight: normal;
     line-height: 50px;
   }
-
 }
 </style>

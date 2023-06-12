@@ -2,6 +2,8 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/userStore'
+import router from '@/router/index.js'
+
 
 const request = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
@@ -30,6 +32,16 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => res.data,
   (e) => {
+    const useStore = useUserStore()
+    // 统一错误提示
+    ElMessage({
+      type: 'warning',
+      message: e.response.data.message,
+    })
+    if(e.response.status === 401){
+      useStore.clearUserInfo()
+      router.push('/login')
+    }
     return Promise.reject(e)
   }
 )

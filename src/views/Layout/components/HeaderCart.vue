@@ -1,5 +1,5 @@
 <script setup>
-import useCartStore from '@/stores/cartStore.js'
+import { useCartStore } from '@/stores/cartStore.js'
 const cartStore = useCartStore()
 </script>
 
@@ -10,7 +10,7 @@ const cartStore = useCartStore()
     </a>
     <div class="layer">
       <div class="list">
-        
+
         <div class="item" v-for="i in cartStore.cartList" :key="i">
           <RouterLink to="">
             <img :src="i.picture" alt="" />
@@ -25,19 +25,19 @@ const cartStore = useCartStore()
               <p class="count">x{{ i.count }}</p>
             </div>
           </RouterLink>
-          <i class="iconfont icon-close-new" @click="store.delCart(i.skuId)"></i>
+          <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)"></i>
         </div>
-       
+
       </div>
       <div class="foot">
         <div class="total">
-          <p>共 10 件商品</p>
-          <p>&yen; 100.00 </p>
+          <p>共 {{ cartStore.allCount }} 件商品</p>
+          <p>&yen; {{ cartStore.allPrice.toFixed(2) }} </p>
         </div>
-        <el-button size="large" type="primary" >去购物车结算</el-button>
+        <el-button size="large" type="primary" @click="$router.push('/cartlist')">去购物车结算</el-button>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -94,7 +94,7 @@ const cartStore = useCartStore()
     padding-top: 10px;
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       right: 14px;
       top: -10px;
